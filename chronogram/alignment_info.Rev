@@ -25,7 +25,7 @@ for (i in 1:n_partitions) {
     info += data[i].numTaxaMissingSequence(1.0) + " & "
     info += data[i].nchar() + " & "
     info += (data[i].nchar() - data[i].getNumInvariantSites(true)) + " & "
-    missing = round((340 - data[i].numTaxaMissingSequence(1.0))*1000/340)/10
+    missing = round((112 - data[i].numTaxaMissingSequence(1.0))*1000/112)/10
     info += missing + " & "
     info += (100 - missing)/100 + " \\\\ \n"
     write(info, filename=out, append=true)

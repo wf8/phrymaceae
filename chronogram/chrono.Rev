@@ -5,7 +5,7 @@
 base_dir = ""
 rep = 1
 n_iterations = 4000
-sample_freq = 5
+sample_freq = 1
 
 ########## Read in data
 
@@ -78,13 +78,12 @@ moves[mvi++] = mvSlide(root_time, delta=1, weight=5)
 
 # set up the parameters for the constant rate birth-death process
 
-diversification_mean <- ln( ln(n_species/2.0) / root_time )
-diversification_sd <- 0.587405*2
+diversification_mean <- abs( ln(n_species/2.0) / root_time )
 
-speciation ~ dnLognormal(mean=diversification_mean, sd=diversification_sd)
+speciation ~ dnExponential( 1 / diversification_mean )
 moves[mvi++] = mvScale(speciation, lambda=1.0, weight=3.0)
 
-extinction ~ dnLognormal(mean=diversification_mean, sd=diversification_sd)
+extinction ~ dnExponential( 1 / diversification_mean )
 moves[mvi++] = mvScale(extinction, lambda=1.0, weight=3.0)
 
 
@@ -127,7 +126,7 @@ for (j in 1:n_branches) {
 
 mean_rt := mean(branch_rates)
 
-up_down_scale_tree = mvUpDownScale(lambda=0.1, weight=100)
+up_down_scale_tree = mvUpDownScale(lambda=0.1, weight=50)
 up_down_scale_tree.addVariable( timetree, TRUE )
 up_down_scale_tree.addVariable( root_time, TRUE )
 
@@ -136,7 +135,7 @@ for (i in 1:n_partitions) {
 
     base_rate[i] ~ dnExponential(10.0)
     base_rate[i].setValue(1.0)
-    moves[mvi++] = mvSlide(base_rate[i], delta=0.1, weight=20)
+    moves[mvi++] = mvSlide(base_rate[i], delta=1.0, weight=20)
     up_down_scale_tree.addVariable( base_rate[i], FALSE )
 
     # the branch-rates used in the phylogenetic CTMC are a function of the UCLN branch rates and the base rate for this partition

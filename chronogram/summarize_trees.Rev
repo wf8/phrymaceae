@@ -1,0 +1,6 @@
+
+
+
+trees = readTreeTrace("output/1.trees", burnin=0.25)
+map = mapTree(trees, "phrymaceae.tree")
+q()

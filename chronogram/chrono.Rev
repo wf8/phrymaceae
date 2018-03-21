@@ -24,6 +24,7 @@ for (i in 1:n_partitions) {
     n_sites[i] <- data[i].nchar()
 }
 
+data[1].addMissingTaxa(data[2].taxa())
 data[2].addMissingTaxa(data[1].taxa())
 
 # get variables from alignments
